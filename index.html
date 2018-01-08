@@ -1,0 +1,91 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <script type="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
+  <script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/rollups/hmac-sha256.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/rollups/sha256.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/components/hmac.js"></script>
+  <script type="text/javascript" src="lib/CryptoJS/components/enc-base64.js"></script>
+  <script type="text/javascript" src="lib/url-template/url-template.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/sigV4Client.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/apiGatewayClient.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/simpleHttpClient.js"></script>
+  <script type="text/javascript" src="lib/apiGatewayCore/utils.js"></script>
+  <script type="text/javascript" src="apigClient.js"></script>
+</head>
+
+<body>
+  <form>
+    <span><h1>Welocme to my book store</h1></span>
+    <ul>
+      <li>
+        <label>BookID  <span class="required">*</span></label>
+        <input type="text" name="bookid" value="" placeholder="bookid">
+      </li>
+      <li>
+        <input type="submit" value="Submit">
+      </li>
+    </ul>
+  </form>
+  <div id="results"></div>
+</body>
+
+<script type="text/javascript">
+  var dataResult;
+  $(document).ready(function(){
+
+    var apigClient = apigClientFactory.newClient();
+    $('form').submit(function(event) {
+
+      var formData = {
+        'bookid': $('input[name=bookid]').val()
+      };
+
+      var params = {
+        'bookid': $('input[name=bookid]').val()
+      };
+
+      var body = {
+
+      };
+
+      var additionalParams = {
+        headers: {
+
+        },
+
+        queryParamas: {
+          'bookid': $('input[name=bookid]').val()
+        }
+      };
+
+      apigClient.bookdetailsGet(params, body, additionalParams)
+        .then(function(result) {
+          console.log(result.data);
+          dataResult = result.data;
+          var resultStr = 'Book ID: <b>' + result.data.Item.bookid + '</b><br>' + 'Book Name: <b>' + result.data.Item.bookname + '</b><br>' + 'Auter: <b>' +
+            result.data.Item.auther + '</b><br>';
+          console.log(resultStr);
+          $('#results').html(resultStr);
+        }).catch(function(result) {
+          console.log("error");
+        });
+      return false;
+    });
+  });
+</script>
+
+</html>
